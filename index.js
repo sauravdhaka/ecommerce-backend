@@ -19,9 +19,16 @@ const jwt = require("jsonwebtoken");
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 const cookieParser = require('cookie-parser');
+const nodemailer = require('nodemailer');
 const crypto = require("crypto");
 const { isAuth, sanitizeUser, cookieExtractor } = require("./services/common");
 const path = require('path')
+
+
+
+
+
+
 
 
 
@@ -92,6 +99,9 @@ server.use("/users", isAuth(), usersRouter.router);
 server.use("/auth", authRouter.router);
 server.use("/cart", isAuth(), cartRouter.router);
 server.use("/orders", isAuth(), ordersRouter.router);
+
+
+
 // this line we add to make react router work in case of other routes doesnt match
 server.get('*', (req, res) =>
   res.sendFile(path.resolve('build', 'index.html'))
