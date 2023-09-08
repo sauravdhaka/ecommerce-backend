@@ -1,4 +1,6 @@
-const {Order} = require('../model/Order')
+const {Order} = require('../model/Order');
+const {User} = require('../model/User')
+const { sendMail, invoiceTemplate } = require('../services/common');
 
 
 exports.fetchOrderByUser = async (req,res)=>{
@@ -16,6 +18,9 @@ exports.createOrder = async (req,res)=>{
      
     try {
         const doc = await order.save();
+        const user = await User.findById(order.user)
+        // we can use await for this 
+        sendMail({to:user.email,html:invoiceTemplate(order),subject:'Order Received' })
         res.status(201).json(doc)
     } catch (err) {
         res.status(400).json(err)
